@@ -3,19 +3,19 @@ var MERGE = require("buildkit/merge");
 
 var assets = {
     
-    "pet/dog/chiwawa" : {includes: {"trick/tailwag": true}, requires: {"pet/dog": true}},
+    "pet/dog/chiwawa" : {include: {"trick/tailwag": true}, require: {"pet/dog": true}},
     
-    "trick/tailwag": {includes: {}, requires: {"trick": true}},
+    "trick/tailwag": {include: {}, require: {"trick": true}},
     
-    "pet/dog": {includes: {"trick/tailwag": true}, requires: {"pet": true}},
+    "pet/dog": {include: {"trick/tailwag": true}, require: {"pet": true}},
 
-    "pet": {includes: {}, requires: {}},
+    "pet": {include: {}, require: {}},
     
-    "trick": {includes: {}, requires: {}},
+    "trick": {include: {}, require: {}},
 
-    "pet/cat/manx": {includes: {}, requires: {"pet/cat": true}},
+    "pet/cat/manx": {include: {}, require: {"pet/cat": true}},
     
-    "pet/cat": {includes: {}, requires: {"pet": true}}
+    "pet/cat": {include: {}, require: {"pet": true}}
     
 };
 
@@ -146,8 +146,8 @@ exports["test: _getOrderedAssets (last)"] = function() {
 exports["test: _getOrderedAssets (circular)"] = function() {
     
     var circular = {
-        "happiness": {requires: {"money": true}},
-        "money": {requires: {"happiness": true}}
+        "happiness": {require: {"money": true}},
+        "money": {require: {"happiness": true}}
     };
     
     var first = [];
