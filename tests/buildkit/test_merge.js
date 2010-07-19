@@ -1,4 +1,4 @@
-var ASSERT = require("test/assert");
+var ASSERT = require("assert");
 var MERGE = require("buildkit/merge");
 
 var assets = {
@@ -34,7 +34,7 @@ exports["test: _getOrderedAssets (all)"] = function() {
         ++count;
         ASSERT.isTrue(ordered.indexOf(path) >= 0, path + " in ordered");
     }
-    ASSERT.is(count, ordered.length, "correct ordered length");
+    ASSERT.strictEqual(ordered.length, count, "correct ordered length");
     
     ASSERT.isTrue(ordered.indexOf("pet") < ordered.indexOf("pet/dog"), "pet before pet/dog");
     ASSERT.isTrue(ordered.indexOf("pet/dog") < ordered.indexOf("pet/dog/chiwawa"), "pet/dog before pet/dog/chiwawa");
@@ -54,13 +54,13 @@ exports["test: _getOrderedAssets (first)"] = function() {
     var last = [];
     var ordered = MERGE._getOrderedAssets(first, include, exclude, last, assets);
     
-    ASSERT.is(-1, ordered.indexOf("pet/cat"), "no pat/cat here");
+    ASSERT.strictEqual(ordered.indexOf("pet/cat"), -1, "no pat/cat here");
     
     ASSERT.isTrue(ordered.indexOf("pet") < ordered.indexOf("pet/dog"), "pet before pet/dog");
     ASSERT.isTrue(ordered.indexOf("pet/dog") < ordered.indexOf("pet/dog/chiwawa"), "pet/dog before pet/dog/chiwawa");
     
     ASSERT.isTrue(ordered.indexOf("trick/tailwag") >= 0, "trick/tailwag included by default");
-    ASSERT.is(0, ordered.indexOf("trick"), "trick first");
+    ASSERT.strictEqual(ordered.indexOf("trick"), 0, "trick first");
 	
     var first = ["pet"];
     var include = ["pet/dog/chiwawa"];
@@ -68,7 +68,7 @@ exports["test: _getOrderedAssets (first)"] = function() {
     var last = [];
     var ordered = MERGE._getOrderedAssets(first, include, exclude, last, assets);
     
-    ASSERT.is(-1, ordered.indexOf("pet/cat"), "no pat/cat here");
+    ASSERT.strictEqual(ordered.indexOf("pet/cat"), -1, "no pat/cat here");
     
     ASSERT.isTrue(ordered.indexOf("pet") < ordered.indexOf("pet/dog"), "pet before pet/dog");
     ASSERT.isTrue(ordered.indexOf("pet/dog") < ordered.indexOf("pet/dog/chiwawa"), "pet/dog before pet/dog/chiwawa");
@@ -76,7 +76,7 @@ exports["test: _getOrderedAssets (first)"] = function() {
     ASSERT.isTrue(ordered.indexOf("trick/tailwag") >= 0, "trick/tailwag included by default");
     ASSERT.isTrue(ordered.indexOf("trick") < ordered.indexOf("trick/tailwag"), "trick before trick/tailwag");
 
-    ASSERT.is(0, ordered.indexOf("pet"), "pet first");
+    ASSERT.strictEqual(ordered.indexOf("pet"), 0, "pet first");
 
 };
 
@@ -88,7 +88,7 @@ exports["test: _getOrderedAssets (include)"] = function() {
     var last = [];
     var ordered = MERGE._getOrderedAssets(first, include, exclude, last, assets);
     
-    ASSERT.is(-1, ordered.indexOf("pet/cat"), "no pat/cat here");
+    ASSERT.strictEqual(ordered.indexOf("pet/cat"), -1, "no pat/cat here");
     
     ASSERT.isTrue(ordered.indexOf("pet") < ordered.indexOf("pet/dog"), "pet before pet/dog");
     ASSERT.isTrue(ordered.indexOf("pet/dog") < ordered.indexOf("pet/dog/chiwawa"), "pet/dog before pet/dog/chiwawa");
@@ -106,13 +106,13 @@ exports["test: _getOrderedAssets (exclude)"] = function() {
     var last = [];
     var ordered = MERGE._getOrderedAssets(first, include, exclude, last, assets);
     
-    ASSERT.is(-1, ordered.indexOf("pet/cat"), "no pat/cat here");
+    ASSERT.strictEqual(ordered.indexOf("pet/cat"), -1, "no pat/cat here");
     
     ASSERT.isTrue(ordered.indexOf("pet") < ordered.indexOf("pet/dog"), "pet before pet/dog");
     ASSERT.isTrue(ordered.indexOf("pet/dog") < ordered.indexOf("pet/dog/chiwawa"), "pet/dog before pet/dog/chiwawa");
     
-    ASSERT.is(-1, ordered.indexOf("trick/tailwag"), "trick/tailwag excluded");
-    ASSERT.is(-1, ordered.indexOf("trick"), "no trick");
+    ASSERT.strictEqual(ordered.indexOf("trick/tailwag"), -1, "trick/tailwag excluded");
+    ASSERT.strictEqual(ordered.indexOf("trick"), -1, "no trick");
 	
 };
 
@@ -129,7 +129,7 @@ exports["test: _getOrderedAssets (last)"] = function() {
         ++count;
         ASSERT.isTrue(ordered.indexOf(path) >= 0, path + " in ordered");
     }
-    ASSERT.is(count, ordered.length, "correct ordered length");
+    ASSERT.strictEqual(ordered.length, count, "correct ordered length");
     
     ASSERT.isTrue(ordered.indexOf("pet") < ordered.indexOf("pet/dog"), "pet before pet/dog");
     ASSERT.isTrue(ordered.indexOf("pet/dog") < ordered.indexOf("pet/dog/chiwawa"), "pet/dog before pet/dog/chiwawa");
@@ -139,7 +139,7 @@ exports["test: _getOrderedAssets (last)"] = function() {
     
     ASSERT.isTrue(ordered.indexOf("trick") < ordered.indexOf("trick/tailwag"), "trick before trick/tailwag");
     
-    ASSERT.is(count-1, ordered.indexOf("pet/cat/manx"), "pet/cat/manx last");
+    ASSERT.strictEqual(ordered.indexOf("pet/cat/manx"), count-1, "pet/cat/manx last");
 
 };
 
@@ -156,7 +156,7 @@ exports["test: _getOrderedAssets (circular)"] = function() {
     var last = [];
     var ordered = MERGE._getOrderedAssets(first, include, exclude, last, circular);
     
-    ASSERT.is(2, ordered.length, "correct ordered length");
+    ASSERT.strictEqual(ordered.length, 2, "correct ordered length");
 
     var first = ["happiness"];
     var include = [];
@@ -164,7 +164,7 @@ exports["test: _getOrderedAssets (circular)"] = function() {
     var last = [];
     var ordered = MERGE._getOrderedAssets(first, include, exclude, last, circular);
 
-    ASSERT.is(0, ordered.indexOf("happiness"), "happiness first");
+    ASSERT.strictEqual(ordered.indexOf("happiness"), 0, "happiness first");
 
 
     var first = ["money"];
@@ -173,11 +173,11 @@ exports["test: _getOrderedAssets (circular)"] = function() {
     var last = [];
     var ordered = MERGE._getOrderedAssets(first, include, exclude, last, circular);
 
-    ASSERT.is(0, ordered.indexOf("money"), "money first");
+    ASSERT.strictEqual(ordered.indexOf("money"), 0, "money first");
 
 };
 
-if (require.main == module) {
-    require("test/runner").run(exports);
-}
 
+if (require.main == module || require.main == module.id) {
+    require("test").run(exports);
+}
