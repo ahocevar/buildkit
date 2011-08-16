@@ -102,7 +102,7 @@ exports["test: _getOrderedAssets (exclude)"] = function() {
 
     var first = [];
     var include = ["pet/dog/chiwawa"];
-    var exclude = ["trick/tailwag"];
+    var exclude = ["trick/"];
     var last = [];
     var ordered = MERGE._getOrderedAssets(first, include, exclude, last, assets);
     
