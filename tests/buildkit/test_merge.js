@@ -103,7 +103,7 @@ exports["test: _getOrderedAssets (include)"] = function() {
 	
 };
 
-exports["test: _getOrderedAssets (exclude)"] = function() {
+exports["test: _getOrderedAssets (exclude overrules include directive)"] = function() {
 
     var first = [];
     var include = ["pet/dog/chiwawa.js"];
@@ -120,6 +120,33 @@ exports["test: _getOrderedAssets (exclude)"] = function() {
     ASSERT.strictEqual(ordered.indexOf("trick.js"), -1, "no trick.js");
 	
 };
+
+exports["test: _getOrderedAssets (exclude overrules require directive)"] = function() {
+
+    var first = [];
+    var include = ["pet/dog.js"]; // dog has a direct dependency on pet
+    var exclude = ["pet.js"]; // but we're going to explicitly exclude this dependency
+    var last = [];
+    var ordered = MERGE._getOrderedAssets(first, include, exclude, last, getAssets());
+    
+    ASSERT.isTrue(ordered.indexOf("pet/dog.js") > -1, "got pet/dog.js");    
+    ASSERT.strictEqual(ordered.indexOf("pet.js"), -1, "no pet.js");
+
+};
+
+exports["test: _getOrderedAssets (exclude overrules require directive - transitive)"] = function() {
+
+    var first = [];
+    var include = ["pet/dog/chiwawa.js"]; // chiwawa has a transitive dependency on pet
+    var exclude = ["pet.js"]; // but we're going to explicitly exclude this dependency
+    var last = [];
+    var ordered = MERGE._getOrderedAssets(first, include, exclude, last, getAssets());
+    
+    ASSERT.isTrue(ordered.indexOf("pet/dog.js") < ordered.indexOf("pet/dog/chiwawa.js"), "pet/dog.js before pet/dog/chiwawa.js");    
+    ASSERT.strictEqual(ordered.indexOf("pet.js"), -1, "no pet.js");
+
+};
+
 
 exports["test: _getOrderedAssets (last)"] = function() {
 
