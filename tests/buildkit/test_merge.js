@@ -51,7 +51,7 @@ exports["test: _getOrderedAssets (all)"] = function() {
 
 };
 
-exports["test: _getOrderedAssets (first)"] = function() {
+exports["test: _getOrderedAssets (first I)"] = function() {
 
     var first = ["trick.js"];
     var include = ["pet/dog/chiwawa.js"];
@@ -66,7 +66,11 @@ exports["test: _getOrderedAssets (first)"] = function() {
     
     ASSERT.isTrue(ordered.indexOf("trick/tailwag.js") >= 0, "trick/tailwag.js included by default");
     ASSERT.strictEqual(ordered.indexOf("trick.js"), 0, "trick first");
-	
+    
+}
+
+exports["test: _getOrderedAssets (first II)"] = function() {
+
     var first = ["pet.js"];
     var include = ["pet/dog/chiwawa.js"];
     var exclude = [];
@@ -100,7 +104,7 @@ exports["test: _getOrderedAssets (include)"] = function() {
     
     ASSERT.isTrue(ordered.indexOf("trick/tailwag.js") >= 0, "trick/tailwag.js included by default");
     ASSERT.isTrue(ordered.indexOf("trick.js") < ordered.indexOf("trick/tailwag.js"), "trick.js before trick/tailwag.js");
-	
+
 };
 
 exports["test: _getOrderedAssets (exclude overrules include directive)"] = function() {
@@ -118,7 +122,7 @@ exports["test: _getOrderedAssets (exclude overrules include directive)"] = funct
     
     ASSERT.strictEqual(ordered.indexOf("trick/tailwag.js"), -1, "trick/tailwag.js excluded");
     ASSERT.strictEqual(ordered.indexOf("trick.js"), -1, "no trick.js");
-	
+
 };
 
 exports["test: _getOrderedAssets (exclude overrules require directive)"] = function() {
