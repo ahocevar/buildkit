@@ -66,6 +66,26 @@ exports["test: monkey"] = function() {
     ASSERT.isTrue(!(g.food.vegetable), "no g.food.vegetable");
 };
 
+exports["test: hungry_monkey"] = function() {
+    buildLib("hungry_monkey.cfg");
+    var g = evalLib("hungry_monkey.js");
+    ASSERT.ok(g.animal, "g.animal");
+    ASSERT.ok(g.animal.mammal, "g.animal.mammal");
+    ASSERT.ok(g.animal.mammal.monkey, "g.animal.mammal.monkey");
+    ASSERT.isTrue(!(g.animal.reptile), "no g.animal.reptile");
+    ASSERT.isTrue(!(g.food), "no g.food");
+};
+
+exports["test: hungry_lizard"] = function() {
+    buildLib("hungry_lizard.cfg");
+    var g = evalLib("hungry_lizard.js");
+    ASSERT.ok(g.animal, "g.animal");
+    ASSERT.ok(g.animal.reptile, "g.animal.reptile");
+    ASSERT.ok(g.animal.reptile.lizard, "g.animal.reptile.lizard");
+    ASSERT.isTrue(!(g.animal.mammal), "no g.animal.mammal");
+    ASSERT.isTrue(!(g.food), "no g.food");
+};
+
 if (require.main == module || require.main == module.id) {
     require("test").run(exports);
 }
