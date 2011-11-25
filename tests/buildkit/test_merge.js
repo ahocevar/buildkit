@@ -1,5 +1,6 @@
 var ASSERT = require("assert");
 var MERGE = require("buildkit/merge");
+var clone = require("ringo/utils/objects").clone;
 
 var assets = {
     
@@ -19,6 +20,10 @@ var assets = {
     
 };
 
+// since the merge modifies assets, we create a fresh clone each time
+function getAssets() {
+    return clone(assets, {}, true);
+}
 
 exports["test: _getOrderedAssets (all)"] = function() {
 
@@ -27,10 +32,10 @@ exports["test: _getOrderedAssets (all)"] = function() {
     var include = [];
     var exclude = [];
     var last = [];
-    var ordered = MERGE._getOrderedAssets(first, include, exclude, last, assets);
+    var ordered = MERGE._getOrderedAssets(first, include, exclude, last, getAssets());
     
     var count = 0;
-    for (var path in assets) {
+    for (var path in getAssets()) {
         ++count;
         ASSERT.isTrue(ordered.indexOf(path) >= 0, path + " in ordered");
     }
@@ -52,7 +57,7 @@ exports["test: _getOrderedAssets (first)"] = function() {
     var include = ["pet/dog/chiwawa"];
     var exclude = [];
     var last = [];
-    var ordered = MERGE._getOrderedAssets(first, include, exclude, last, assets);
+    var ordered = MERGE._getOrderedAssets(first, include, exclude, last, getAssets());
     
     ASSERT.strictEqual(ordered.indexOf("pet/cat"), -1, "no pat/cat here");
     
@@ -66,7 +71,7 @@ exports["test: _getOrderedAssets (first)"] = function() {
     var include = ["pet/dog/chiwawa"];
     var exclude = [];
     var last = [];
-    var ordered = MERGE._getOrderedAssets(first, include, exclude, last, assets);
+    var ordered = MERGE._getOrderedAssets(first, include, exclude, last, getAssets());
     
     ASSERT.strictEqual(ordered.indexOf("pet/cat"), -1, "no pat/cat here");
     
@@ -86,7 +91,7 @@ exports["test: _getOrderedAssets (include)"] = function() {
     var include = ["pet/dog/chiwawa"];
     var exclude = [];
     var last = [];
-    var ordered = MERGE._getOrderedAssets(first, include, exclude, last, assets);
+    var ordered = MERGE._getOrderedAssets(first, include, exclude, last, getAssets());
     
     ASSERT.strictEqual(ordered.indexOf("pet/cat"), -1, "no pat/cat here");
     
@@ -104,7 +109,7 @@ exports["test: _getOrderedAssets (exclude)"] = function() {
     var include = ["pet/dog/chiwawa"];
     var exclude = ["trick/"];
     var last = [];
-    var ordered = MERGE._getOrderedAssets(first, include, exclude, last, assets);
+    var ordered = MERGE._getOrderedAssets(first, include, exclude, last, getAssets());
     
     ASSERT.strictEqual(ordered.indexOf("pet/cat"), -1, "no pat/cat here");
     
@@ -122,10 +127,10 @@ exports["test: _getOrderedAssets (last)"] = function() {
     var include = [];
     var exclude = [];
     var last = ["pet/cat/manx"];
-    var ordered = MERGE._getOrderedAssets(first, include, exclude, last, assets);
+    var ordered = MERGE._getOrderedAssets(first, include, exclude, last, getAssets());
     
     var count = 0;
-    for (var path in assets) {
+    for (var path in getAssets()) {
         ++count;
         ASSERT.isTrue(ordered.indexOf(path) >= 0, path + " in ordered");
     }
