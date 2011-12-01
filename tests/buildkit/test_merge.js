@@ -214,6 +214,6 @@ exports["test: _getOrderedAssets (circular)"] = function() {
 };
 
 
-if (require.main == module || require.main == module.id) {
-    require("test").run(exports);
+if (require.main == module.id) {
+    system.exit(require("test").run(exports));
 }
